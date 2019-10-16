@@ -44,19 +44,43 @@ class Scrapper   #une instance = un departement
 			
 			@list_emails_array << @@result_hash
 		end
+		#json_list
+		google_sheet
+	end
+		
+	def json_list
+		File.open("db/emails_array.json","w") do |f|
+                        f.write(@list_emails_array.to_json)
+                end
+
 	end
 	
 	def self.json
-		File.open("db/emails.json","w") do |f|
+		File.open("db/emails_hash.json","w") do |f|
 			@all_departments[0].list_emails_array.each do |mairie|
-			#puts @@all_departments[0].list_emails_array
-			#f.write(@@all_departments[0].list_emails_array)
-			f.write(mairie.to_json)
+				f.write(mairie.to_json)
 			end
 		end
 
 	end
-
+	
+	def google_sheet
+		session = GoogleDrive::Session.from_config("config.json")
+		ws = session.spreadsheet_by_key("1LAYsOmHoHsvlgrnVFqpqdm38C3LE2IBpPwRHwNOQ2No").worksheets[0]
+		
+		x=1
+		
+		@list_emails_array.each do |mairie|
+			
+			ws[x, 1] = mairie.keys	#ws[ligne,colonne]
+			ws[x, 2] = mairie.values
+			#ws.save
+		x += 1
+		end
+		ws.save
+		
+		#https://docs.google.com/spreadsheets/d/1LAYsOmHoHsvlgrnVFqpqdm38C3LE2IBpPwRHwNOQ2No/edit#gid=0
+	end
 
 
 end

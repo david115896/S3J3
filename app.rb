@@ -12,4 +12,7 @@ Scrapper.new("http://annuaire-des-mairies.com/val-d-oise.html").perform
 	
 #Scrapper.show_emails
 
-#Scrapper.new
+#Scrapper.json
+#
+
+
