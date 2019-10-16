@@ -17,8 +17,8 @@ class Scrapper   #une instance = un departement
 		@@all_departments << self
 	end
 		
-	def show_emails
-		return @list_emails_array
+	def self.show_emails
+		return @@all_departments[0].list_emails_array
 	end	
 
 	def get_html_from_url(url_to_analyze)
@@ -45,4 +45,18 @@ class Scrapper   #une instance = un departement
 			@list_emails_array << @@result_hash
 		end
 	end
+	
+	def self.json
+		File.open("db/emails.json","w") do |f|
+			@all_departments[0].list_emails_array.each do |mairie|
+			#puts @@all_departments[0].list_emails_array
+			#f.write(@@all_departments[0].list_emails_array)
+			f.write(mairie.to_json)
+			end
+		end
+
+	end
+
+
+
 end
